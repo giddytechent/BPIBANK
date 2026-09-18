@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRANSFER
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum CardType {
+  VIRTUAL
+  PHYSICAL
+}
+
+enum CardStatus {
+  ACTIVE
+  BLOCKED
+  EXPIRED
+}
+
+model User {
+  id                 String   @id @default(cuid())
+  email              String   @unique
+  name               String?
+  passwordHash       String?
+  transactionPinHash String?
+  city               String?
+  country            String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  accounts Account[]
+  cards    Card[]
+
+  sentTransactions     Transaction[] @relation("SenderTransactions")
+  receivedTransactions Transaction[] @relation("ReceiverTransactions")
+}
+
+model Account {
+  id            String      @id @default(cuid())
+  accountNumber String      @unique
+  type          AccountType
+  balance       Int         @default(0)
+  currency      String      @default("USD")
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  sentTransactions     Transaction[] @relation("SenderAccount")
+  receivedTransactions Transaction[] @relation("ReceiverAccount")
+}
+
+model Transaction {
+  id     String            @id @default(cuid())
+  type   TransactionType
+  status TransactionStatus @default(COMPLETED)
+
+  amount      Int
+  currency    String  @default("USD")
+  description String?
+
+  recipientBankName String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  senderUserId String?
+  senderUser   User?   @relation("SenderTransactions", fields: [senderUserId], references: [id])
+
+  receiverUserId String?
+  receiverUser   User?   @relation("ReceiverTransactions", fields: [receiverUserId], references: [id])
+
+  senderAccountId String?
+  senderAccount   Account? @relation("SenderAccount", fields: [senderAccountId], references: [id])
+
+  receiverAccountId String?
+  receiverAccount   Account? @relation("ReceiverAccount", fields: [receiverAccountId], references: [id])
+}
+
+model Card {
+  id     String     @id @default(cuid())
+  type   CardType
+  status CardStatus @default(ACTIVE)
+
+  lastFour    String
+  expiryMonth Int
+  expiryYear  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
