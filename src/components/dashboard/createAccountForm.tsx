@@ -49,7 +49,7 @@ export function CreateAccountForm() {
       <div>
         <label
           htmlFor="account-type"
-          className="mb-2 block text-sm font-medium text-slate-300"
+          className="mb-2 block text-sm font-medium text-stone-700"
         >
           Account type
         </label>
@@ -64,7 +64,7 @@ export function CreateAccountForm() {
                 | "SAVINGS",
             )
           }
-          className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-blue-500"
+          className="w-full rounded-md border border-stone-200 bg-white px-4 py-3 text-stone-900 outline-none focus:border-(--brand-red)"
         >
           <option value="SAVINGS">
             Savings Account
@@ -77,13 +77,13 @@ export function CreateAccountForm() {
       </div>
 
       {createAccountMutation.isError && (
-        <p className="text-sm text-red-400">
+        <p className="text-sm text-red-700">
           {createAccountMutation.error.message}
         </p>
       )}
 
       {createAccountMutation.isSuccess && (
-        <p className="text-sm text-emerald-400">
+        <p className="text-sm text-emerald-700">
           Account created successfully.
         </p>
       )}
@@ -91,7 +91,7 @@ export function CreateAccountForm() {
       <button
         type="submit"
         disabled={createAccountMutation.isPending}
-        className="w-full rounded-xl bg-blue-600 px-4 py-3 font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-md bg-(--brand-red) px-4 py-3 font-medium text-white transition hover:bg-(--brand-red-dark) disabled:cursor-not-allowed disabled:opacity-50"
       >
         {createAccountMutation.isPending
           ? "Creating..."

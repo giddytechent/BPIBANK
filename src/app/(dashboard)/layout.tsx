@@ -3,9 +3,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { ArrowLeft } from "lucide-react";
+import { Bell, ChevronDown, Menu, Search, X } from "lucide-react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc";
 
@@ -15,7 +16,8 @@ export default function DashboardLayout({
     children: ReactNode;
 }) {
     const pathname = usePathname();
-    const router = useRouter();
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [profileOpen, setProfileOpen] = useState(false);
     const trpc = useTRPC();
     const profileQuery = useQuery(trpc.user.me.queryOptions());
     const profileName = profileQuery.data?.name?.trim() || "Your profile";
@@ -27,71 +29,73 @@ export default function DashboardLayout({
         .join("")
         .toUpperCase() || "YP";
 
+    const navItems = [
+        ["/dashboard", "Overview"],
+        ["/dashboard/accounts", "Accounts"],
+        ["/dashboard/transfers", "Transfers"],
+        ["/dashboard/transactions", "Transactions"],
+        ["/dashboard/cards", "Cards"],
+    ] as const;
+
     return (
-        <div className="min-h-screen bg-slate-950 text-white">
-            <div className="flex min-h-screen">
-                {/* Sidebar */}
-                <aside className="hidden w-64 border-r border-white/10 bg-slate-950 lg:block">
-                    <div className="flex h-full flex-col px-5 py-6">
-                        {/* Logo */}
-                        <Link href="/dashboard" className="mb-10 flex items-center gap-2 justify-center">
-                            <Image
-                                src="/BPI1.png"
-                                alt="BPI logo"
-                                width="50"
-                                height="50"
-                                className="border rounded-xl"
-                            />
-                            <div className="text-xl font-bold tracking-tight">
-                                BPI <span className="text-blue-400">Bank</span>
-                            </div>
-                        </Link>
+        <div className="min-h-screen bg-background text-foreground">
+            <header className="brand-pattern sticky top-0 z-20 text-white shadow-md">
+                <div className="mx-auto flex min-h-18 max-w-7xl items-center gap-5 px-5 py-3 lg:px-8">
+                    <Link href="/dashboard" className="flex shrink-0 items-center gap-2">
+                        <Image src="/BPI1.png" alt="BPI logo" width={38} height={38} className="rounded-md bg-white object-contain p-0.5" />
+                        <span className="text-xl font-bold tracking-tight">BPI <span className="font-normal">Bank</span></span>
+                    </Link>
 
-                        {/* Navigation */}
-                        <nav className="space-y-1">
-                            <NavItem href="/dashboard" label="Overview" pathname={pathname} />
-                            <NavItem href="/dashboard/accounts" label="Accounts" pathname={pathname} />
-                            <NavItem href="/dashboard/transfers" label="Transfers" pathname={pathname} />
-                            <NavItem href="/dashboard/transactions" label="Transactions" pathname={pathname} />
-                            <NavItem href="/dashboard/cards" label="Cards" pathname={pathname} />
-                        </nav>
+                    <nav className="hidden flex-1 items-center justify-center gap-1 xl:flex">
+                        {navItems.map(([href, label]) => <NavItem key={href} href={href} label={label} pathname={pathname} />)}
+                    </nav>
+                    <nav className="hidden flex-1 items-center justify-center gap-0.5 md:flex xl:hidden">
+                        {navItems.map(([href, label]) => <NavItem key={href} href={href} label={label} pathname={pathname} compact />)}
+                    </nav>
 
-                        <div className="mt-auto">
-                            <nav className="space-y-1">
-                                <NavItem href="/dashboard/settings" label="Settings" pathname={pathname} />
-                            </nav>
-
-                            <div className="mt-6 border-t border-white/10 pt-5">
-                                <div className="flex items-center gap-3 px-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/20 text-sm font-semibold text-blue-300">
-                                        {profileInitials}
+                    <div className="ml-auto flex items-center gap-2">
+                        <button type="button" aria-label="Search" className="hidden rounded-md p-2 transition hover:bg-white/10 sm:block"><Search size={19} /></button>
+                        <button type="button" aria-label="Notifications" className="hidden rounded-md p-2 transition hover:bg-white/10 sm:block"><Bell size={19} /></button>
+                        <div className="relative hidden xl:block">
+                            <button
+                                type="button"
+                                aria-expanded={profileOpen}
+                                onClick={() => setProfileOpen((open) => !open)}
+                                className="flex items-center gap-2 border-l border-white/25 pl-3 text-left"
+                            >
+                                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-(--brand-gold) text-sm font-bold text-(--brand-red-dark)">{profileInitials}</span>
+                                <span className="max-w-28 truncate text-sm font-semibold">{profileName}</span>
+                                <ChevronDown size={16} className={profileOpen ? "rotate-180 transition" : "transition"} />
+                            </button>
+                            {profileOpen && (
+                                <div className="absolute right-0 top-12 w-52 rounded-md bg-white p-2 text-stone-900 shadow-xl ring-1 ring-black/10">
+                                    <div className="border-b border-stone-100 px-3 py-2">
+                                        <p className="truncate text-sm font-semibold">{profileName}</p>
+                                        <p className="mt-0.5 text-xs text-stone-500">Personal account</p>
                                     </div>
-
-                                    <div>
-                                        <p className="text-sm font-medium">{profileName}</p>
-                                        <p className="text-xs text-slate-500">Personal account</p>
-                                    </div>
+                                    <Link href="/dashboard/settings" onClick={() => setProfileOpen(false)} className="mt-1 block rounded px-3 py-2 text-sm hover:bg-red-50 hover:text-(--brand-red)">Profile and settings</Link>
                                 </div>
-                            </div>
+                            )}
                         </div>
-                    </div>
-                </aside>
-
-                {/* Main content */}
-                <main className="min-w-0 flex-1">
-                    <div className="flex items-center border-b border-white/10 px-5 py-3 lg:hidden">
-                        <button
-                            type="button"
-                            onClick={() => pathname === "/dashboard" ? router.push("/") : router.back()}
-                            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/3 px-3 py-2 text-sm text-slate-300 transition hover:bg-white/5 hover:text-white"
-                        >
-                            <ArrowLeft className="h-4 w-4" />
-                            Back
+                        <button type="button" aria-label={mobileOpen ? "Close navigation" : "Open navigation"} aria-expanded={mobileOpen} onClick={() => setMobileOpen((open) => !open)} className="rounded-md p-3 transition hover:bg-white/10 md:hidden">
+                            {mobileOpen ? <X size={21} /> : <Menu size={21} />}
                         </button>
                     </div>
-                    {children}
-                </main>
-            </div>
+                </div>
+                {mobileOpen && (
+                    <nav className="border-t border-white/15 px-5 py-3 md:hidden">
+                        <div className="grid gap-1 sm:grid-cols-2">
+                            {navItems.map(([href, label]) => (
+                                <Link key={href} href={href} onClick={() => setMobileOpen(false)} className={`rounded-md px-3 py-3 text-sm font-semibold ${isNavItemActive(href, pathname) ? "bg-white text-(--brand-red)" : "text-white/85 hover:bg-white/10"}`}>
+                                    {label}
+                                </Link>
+                            ))}
+                            <Link href="/dashboard/settings" onClick={() => setMobileOpen(false)} className="rounded-md px-3 py-3 text-sm font-semibold text-white/85 hover:bg-white/10">Settings</Link>
+                        </div>
+                    </nav>
+                )}
+            </header>
+            <main className="dashboard-page min-h-[calc(100vh-4.5rem)]">{children}</main>
         </div>
     );
 }
@@ -100,24 +104,30 @@ function NavItem({
     href,
     label,
     pathname,
+    compact = false,
 }: {
     href: string;
     label: string;
     pathname: string;
+    compact?: boolean;
 }) {
-    const isActive = href === "/dashboard"
-        ? pathname === href || pathname === `${href}/`
-        : pathname === href || pathname.startsWith(`${href}/`);
+    const isActive = isNavItemActive(href, pathname);
 
     return (
         <Link
             href={href}
-            className={`block w-full rounded-xl px-3 py-2.5 text-sm transition ${isActive
-                ? "bg-blue-500/10 text-blue-300"
-                : "text-slate-400 hover:bg-white/5 hover:text-white"
+            className={`whitespace-nowrap rounded-md ${compact ? "px-2 text-xs" : "px-3 text-sm"} py-2.5 font-semibold transition ${isActive
+                ? "bg-white text-(--brand-red)"
+                : "text-white/85 hover:bg-white/10 hover:text-white"
                 }`}
         >
             {label}
         </Link>
     );
+}
+
+function isNavItemActive(href: string, pathname: string) {
+    return href === "/dashboard"
+        ? pathname === href || pathname === `${href}/`
+        : pathname === href || pathname.startsWith(`${href}/`);
 }

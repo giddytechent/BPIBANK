@@ -1,33 +1,24 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  BadgeCheck,
-  CircleDollarSign,
-  Eye,
-  HandCoins,
-  Landmark,
-  ShieldCheck,
-  Users,
-} from "lucide-react";
+import { ArrowRight, Eye, HandCoins, Landmark, ShieldCheck } from "lucide-react";
 
 const principles = [
   {
     icon: Eye,
+    number: "01",
     title: "Clarity by default",
-    description:
-      "Your balance, activity, and next move should always be easy to understand.",
+    description: "Your balance, activity, and next move should always be easy to understand.",
   },
   {
     icon: ShieldCheck,
+    number: "02",
     title: "Trust built in",
-    description:
-      "Strong authentication and careful authorization protect every account interaction.",
+    description: "Strong access controls and careful authorization protect every account interaction.",
   },
   {
     icon: HandCoins,
+    number: "03",
     title: "Useful every day",
-    description:
-      "Thoughtful tools make transfers, cards, and account management feel effortless.",
+    description: "Thoughtful tools make transfers, cards, and account management easier to navigate.",
   },
 ];
 
@@ -35,145 +26,106 @@ const milestones = [
   ["01", "Open your account", "Create a secure profile in a few simple steps."],
   ["02", "Make it yours", "Add accounts, cards, and the details you need."],
   ["03", "Move with confidence", "Send money and follow every transaction from one place."],
-];
+] as const;
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-slate-800 text-white">
-      <section className="relative border-b border-white/10">
-        <div className="pointer-events-none absolute -right-40 top-8 h-96 w-96 rounded-full bg-blue-600/20 blur-[120px]" />
-        <div className="pointer-events-none absolute -left-48 bottom-0 h-80 w-80 rounded-full bg-cyan-500/10 blur-[100px]" />
-
-        <div className="relative mx-auto grid max-w-7xl gap-14 px-6 pb-24 pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:px-8 lg:pb-32 lg:pt-28">
-          <div>
-            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-500/10 px-4 py-2 text-sm text-blue-300">
+    <main className="marketing-page overflow-hidden">
+      <section className="marketing-pattern relative overflow-hidden text-white">
+        <div aria-hidden="true" className="absolute -left-20 bottom-0 h-72 w-72 rotate-45 border-[3.5rem] border-(--marketing-gold)/90" />
+        <div aria-hidden="true" className="absolute -right-24 top-0 h-96 w-96 rotate-45 border-[4rem] border-(--marketing-red)/70" />
+        <div className="marketing-container relative py-22 sm:py-28 lg:py-36">
+          <div className="max-w-4xl">
+            <p className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.16em] text-(--marketing-gold)">
               <Landmark className="h-4 w-4" />
-              Banking, with a clearer point of view
-            </div>
-
-            <h1 className="max-w-3xl text-5xl font-bold leading-[1.03] tracking-tight sm:text-6xl lg:text-7xl">
-              Money should feel
-              <span className="block text-blue-400">less complicated.</span>
-            </h1>
-
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-400">
-              BPI BANK brings the essentials of everyday banking into one calm,
-              capable place. We believe better financial tools give people more
-              room to focus on what their money makes possible.
+              About BPI Bank
             </p>
-
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/register"
-                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold transition hover:bg-blue-500"
-              >
-                Open an account
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                href="#principles"
-                className="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-6 py-3.5 font-semibold text-slate-200 transition hover:bg-white/10"
-              >
-                What guides us
-              </Link>
-            </div>
-          </div>
-
-          <div className="relative lg:pb-3">
-            <div className="absolute -inset-5 rounded-[2rem] bg-blue-600/10 blur-2xl" />
-            <div className="relative rounded-[1.75rem] border border-white/10 bg-slate-900/80 p-7 shadow-2xl backdrop-blur sm:p-9">
-              <div className="flex items-start justify-between border-b border-white/10 pb-7">
-                <div>
-                  <p className="text-sm text-slate-500">Our north star</p>
-                  <p className="mt-2 text-2xl font-semibold">More control. Less noise.</p>
-                </div>
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-500/10">
-                  <CircleDollarSign className="h-6 w-6 text-blue-400" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-6 py-7">
-                <div>
-                  <p className="text-3xl font-bold text-blue-400">1</p>
-                  <p className="mt-2 text-sm leading-6 text-slate-400">focused place for your everyday finances</p>
-                </div>
-                <div>
-                  <p className="text-3xl font-bold text-blue-400">0</p>
-                  <p className="mt-2 text-sm leading-6 text-slate-400">guesswork between you and your money</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 rounded-xl border border-emerald-400/15 bg-emerald-400/5 px-4 py-3 text-sm text-emerald-300">
-                <BadgeCheck className="h-5 w-5 shrink-0" />
-                Built around transparency and control
-              </div>
-            </div>
+            <h1 className="mt-7 text-5xl font-bold leading-[0.98] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
+              Progress is personal.
+            </h1>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/85 sm:text-xl">
+              Better financial tools give people more room to focus on what their money makes possible. That is the clearer point of view behind BPI Bank.
+            </p>
           </div>
         </div>
       </section>
 
-      <section id="principles" className="border-b border-white/10 bg-slate-900/45">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-widest text-blue-400">What we believe</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Good banking gets out of the way.</h2>
-            <p className="mt-5 leading-7 text-slate-400">
-              The best financial experience is one that helps you act with confidence without asking you to become an expert first.
+      <section className="marketing-section-divider bg-(--marketing-surface)">
+        <div className="marketing-container grid gap-10 py-20 sm:py-24 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-20">
+          <p className="marketing-eyebrow">Our purpose</p>
+          <div>
+            <h2 className="max-w-3xl text-3xl font-bold leading-tight tracking-tight text-(--marketing-text) sm:text-4xl">
+              Bring the essentials of everyday banking into one calm, capable place.
+            </h2>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-(--marketing-text-muted)">
+              We believe banking should make the next decision feel more straightforward—whether you are checking an account, moving money, or keeping track of what matters.
             </p>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+      <section id="principles" className="marketing-section-divider bg-(--marketing-surface-muted)">
+        <div className="marketing-container py-20 sm:py-24">
+          <div className="max-w-2xl">
+            <p className="marketing-eyebrow">What we believe</p>
+            <h2 className="mt-5 text-3xl font-bold tracking-tight text-(--marketing-text) sm:text-4xl">Good banking gets out of the way.</h2>
+          </div>
+          <div className="mt-12 grid border-t border-(--marketing-border) md:grid-cols-3">
             {principles.map((principle) => {
               const Icon = principle.icon;
 
               return (
-                <div key={principle.title} className="rounded-2xl border border-white/10 bg-white/3 p-7 transition hover:-translate-y-1 hover:bg-white/6">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-500/10">
-                    <Icon className="h-5 w-5 text-blue-400" />
+                <article key={principle.title} className="border-b border-(--marketing-border) px-0 py-8 md:border-b-0 md:border-r md:px-8 md:first:pl-0 md:last:border-r-0 md:last:pr-0">
+                  <div className="flex items-start justify-between gap-5">
+                    <Icon className="h-7 w-7 text-(--marketing-red)" />
+                    <span className="text-sm font-extrabold tracking-[0.1em] text-(--marketing-gold)">{principle.number}</span>
                   </div>
-                  <h3 className="mt-6 text-lg font-semibold">{principle.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">{principle.description}</p>
-                </div>
+                  <h3 className="mt-8 text-2xl font-bold text-(--marketing-text)">{principle.title}</h3>
+                  <p className="mt-4 text-sm leading-6 text-(--marketing-text-muted)">{principle.description}</p>
+                </article>
               );
             })}
           </div>
         </div>
       </section>
 
-      <section>
-        <div className="mx-auto grid max-w-7xl gap-14 px-6 py-24 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
+      <section className="marketing-section-divider bg-(--marketing-surface)">
+        <div className="marketing-container grid gap-12 py-20 sm:py-24 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-widest text-blue-400">The BPI way</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">From first login to everyday confidence.</h2>
-            <p className="mt-5 leading-7 text-slate-400">
+            <p className="marketing-eyebrow">The BPI way</p>
+            <h2 className="mt-5 text-3xl font-bold leading-tight tracking-tight text-(--marketing-text) sm:text-4xl">From first login to everyday confidence.</h2>
+            <p className="mt-5 leading-7 text-(--marketing-text-muted)">
               Every part of the experience is designed to make the next financial decision feel a little more straightforward.
             </p>
           </div>
-
-          <div className="divide-y divide-white/10 border-y border-white/10">
+          <ol className="border-t border-(--marketing-red)">
             {milestones.map(([number, title, description]) => (
-              <div key={number} className="grid gap-4 py-6 sm:grid-cols-[64px_1fr] sm:items-start">
-                <span className="text-sm font-semibold text-blue-400">{number}</span>
+              <li key={number} className="grid gap-4 border-b border-(--marketing-border) py-7 sm:grid-cols-[5rem_1fr]">
+                <span className="text-xl font-extrabold text-(--marketing-gold)">{number}</span>
                 <div>
-                  <h3 className="text-lg font-semibold">{title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400">{description}</p>
+                  <h3 className="text-xl font-bold text-(--marketing-text)">{title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-(--marketing-text-muted)">{description}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      <section className="border-t border-white/10 bg-slate-900/50">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-          <div className="overflow-hidden rounded-3xl bg-linear-to-br from-blue-600 to-blue-800 px-6 py-16 text-center sm:px-12">
-            <Users className="mx-auto h-8 w-8 text-blue-100" />
-            <h2 className="mt-5 text-3xl font-bold sm:text-4xl">A better relationship with your money starts here.</h2>
-            <p className="mx-auto mt-4 max-w-xl text-blue-100">Simple tools, clear information, and the confidence to move forward.</p>
-            <Link href="/register" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 font-semibold text-slate-950 transition hover:bg-slate-100">
-              Get started
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+      <section className="bg-(--marketing-page-background)">
+        <div className="marketing-container py-20 sm:py-24">
+          <div className="marketing-pattern relative overflow-hidden px-7 py-16 text-center text-white shadow-xl sm:px-12 sm:py-20">
+            <div aria-hidden="true" className="absolute -left-14 bottom-0 h-48 w-48 rotate-45 border-[2.75rem] border-(--marketing-gold)/90" />
+            <div aria-hidden="true" className="absolute -right-16 top-0 h-52 w-52 rotate-45 border-[3rem] border-(--marketing-red)/75" />
+            <div className="relative mx-auto max-w-2xl">
+              <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-(--marketing-gold)">Bank with BPI Bank</p>
+              <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-5xl">A better relationship with your money starts here.</h2>
+              <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-white/85">Simple tools, clear information, and the confidence to move forward.</p>
+              <Link href="/register" className="mt-9 inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-white px-6 py-3 text-sm font-extrabold uppercase tracking-[0.08em] text-(--marketing-red) transition hover:bg-(--marketing-gold) hover:text-(--marketing-red-dark)">
+                Open an account
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
