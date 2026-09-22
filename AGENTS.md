@@ -8,7 +8,3 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-Setup this admin page and route. 
-1. Route the page and give it permission to "johndoe123@gmail.com" in the db as admin. 
-2. The admin should be able to edit users (create, read, update and delete users), edit transaction history (edit transacation date and time, amount and description), Top up acoount balance and able to edit transaction state like ( completed, pending and failed during transfer). 
-3Randomly stimulate transfer delay  (from 30sec to 90sec) during transfer process.

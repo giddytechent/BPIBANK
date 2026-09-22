@@ -55,7 +55,7 @@ export function ProfileForm() {
 
   if (profileQuery.isLoading) {
     return (
-      <div className="rounded-2xl border border-white/10 bg-white/3 p-6 text-sm text-slate-500">
+      <div className="rounded-md border border-stone-200 bg-white p-6 text-sm text-stone-500 shadow-sm">
         Loading profile...
       </div>
     );
@@ -64,15 +64,15 @@ export function ProfileForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-5 rounded-2xl border border-white/10 bg-white/4 p-5 shadow-2xl shadow-black/10"
+      className="space-y-5 rounded-md border border-stone-200 bg-white p-5 shadow-sm"
     >
       <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/15 text-blue-300">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-red-50 text-(--brand-red)">
           <UserRound className="h-5 w-5" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-white">Profile details</h2>
-          <p className="mt-1 text-sm leading-5 text-slate-400">
+          <h2 className="text-lg font-semibold text-stone-900">Profile details</h2>
+          <p className="mt-1 text-sm leading-5 text-stone-500">
             Update the information used on your account.
           </p>
         </div>
@@ -80,7 +80,7 @@ export function ProfileForm() {
 
       <div className="space-y-4">
         <div>
-          <label htmlFor="profile-name" className="mb-2 block text-sm font-medium text-slate-300">
+          <label htmlFor="profile-name" className="mb-2 block text-sm font-medium text-stone-700">
             Full name
           </label>
 
@@ -88,13 +88,13 @@ export function ProfileForm() {
             id="profile-name"
             value={name}
             onChange={(event) => setName(event.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/60 focus:ring-2 focus:ring-blue-400/10"
+            className="w-full rounded-md border border-stone-200 bg-white px-4 py-3 text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-(--brand-red) focus:ring-2 focus:ring-red-100"
           />
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
-            <label htmlFor="profile-city" className="mb-2 block text-sm font-medium text-slate-300">
+            <label htmlFor="profile-city" className="mb-2 block text-sm font-medium text-stone-700">
               City
             </label>
 
@@ -102,12 +102,12 @@ export function ProfileForm() {
               id="profile-city"
               value={city}
               onChange={(event) => setCity(event.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/60 focus:ring-2 focus:ring-blue-400/10"
+              className="w-full rounded-md border border-stone-200 bg-white px-4 py-3 text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-(--brand-red) focus:ring-2 focus:ring-red-100"
             />
           </div>
 
           <div>
-            <label htmlFor="profile-country" className="mb-2 block text-sm font-medium text-slate-300">
+            <label htmlFor="profile-country" className="mb-2 block text-sm font-medium text-stone-700">
               Country
             </label>
 
@@ -115,14 +115,14 @@ export function ProfileForm() {
               id="profile-country"
               value={country}
               onChange={(event) => setCountry(event.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/60 focus:ring-2 focus:ring-blue-400/10"
+              className="w-full rounded-md border border-stone-200 bg-white px-4 py-3 text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-(--brand-red) focus:ring-2 focus:ring-red-100"
             />
           </div>
         </div>
       </div>
 
       {message && (
-        <p className="flex items-center gap-2 rounded-xl border border-emerald-400/15 bg-emerald-400/10 px-3 py-2.5 text-sm text-emerald-300">
+        <p className="flex items-center gap-2 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm text-emerald-700">
           <CheckCircle2 className="h-4 w-4" />
           {message}
         </p>
@@ -131,7 +131,7 @@ export function ProfileForm() {
       <button
         type="submit"
         disabled={updateProfileMutation.isPending}
-        className="inline-flex items-center gap-2 rounded-xl bg-blue-500 px-4 py-2.5 font-medium text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+        className="inline-flex items-center gap-2 rounded-md bg-(--brand-red) px-4 py-2.5 font-medium text-white transition hover:bg-(--brand-red-dark) disabled:cursor-not-allowed disabled:opacity-50"
       >
         <Save className="h-4 w-4" />
         {updateProfileMutation.isPending

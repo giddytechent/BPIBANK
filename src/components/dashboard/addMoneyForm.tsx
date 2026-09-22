@@ -74,13 +74,13 @@ export function AddMoneyForm({
             <div>
                 <label
                     htmlFor="amount"
-                    className="mb-2 block text-sm font-medium text-slate-300"
+                        className="mb-2 block text-sm font-medium text-stone-700"
                 >
                     Amount
                 </label>
 
                 <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">
                         $
                     </span>
 
@@ -94,19 +94,19 @@ export function AddMoneyForm({
                             setAmount(event.target.value)
                         }
                         placeholder="0.00"
-                        className="w-full rounded-xl border border-slate-700 bg-slate-950 py-3 pl-9 pr-4 text-white outline-none focus:border-blue-500"
+                        className="w-full rounded-md border border-stone-200 bg-white py-3 pl-9 pr-4 text-stone-900 outline-none focus:border-(--brand-red)"
                     />
                 </div>
             </div>
 
             {depositMutation.isError && (
-                <p className="text-sm text-red-400">
+                <p className="text-sm text-red-700">
                     {depositMutation.error.message}
                 </p>
             )}
 
             {depositMutation.isSuccess && (
-                <p className="text-sm text-emerald-400">
+                <p className="text-sm text-emerald-700">
                     Money added successfully.
                 </p>
             )}
@@ -117,7 +117,7 @@ export function AddMoneyForm({
                     depositMutation.isPending ||
                     !amount
                 }
-                className="w-full rounded-xl bg-blue-600 px-4 py-3 font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-md bg-(--brand-red) px-4 py-3 font-medium text-white transition hover:bg-(--brand-red-dark) disabled:cursor-not-allowed disabled:opacity-50"
             >
                 {depositMutation.isPending
                     ? "Adding money..."

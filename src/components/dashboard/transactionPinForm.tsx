@@ -59,7 +59,7 @@ export function TransactionPinForm() {
 
   if (pinQuery.isLoading) {
     return (
-      <div className="rounded-2xl border border-white/10 bg-white/3 p-5 text-sm text-slate-500">
+      <div className="rounded-md border border-stone-200 bg-white p-5 text-sm text-stone-500 shadow-sm">
         Loading security settings...
       </div>
     );
@@ -68,25 +68,25 @@ export function TransactionPinForm() {
   const hasPin = pinQuery.data?.hasPin;
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/4 p-5 shadow-2xl shadow-black/10">
+    <div className="rounded-md border border-stone-200 bg-white p-5 shadow-sm">
       <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-400/10 text-amber-300">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-(--brand-gold) text-(--brand-red-dark)">
           <KeyRound className="h-5 w-5" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-white">Transaction PIN</h2>
-          <p className="mt-1 text-sm leading-5 text-slate-400">
+          <h2 className="text-lg font-semibold text-stone-900">Transaction PIN</h2>
+          <p className="mt-1 text-sm leading-5 text-stone-500">
             A 6-digit PIN protects transfers from your account.
           </p>
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-between rounded-xl border border-white/10 bg-slate-950/70 px-4 py-3">
+      <div className="mt-4 flex items-center justify-between rounded-md border border-stone-200 bg-stone-50 px-4 py-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.14em] text-slate-500">Status</p>
-          <p className="mt-1 font-medium text-white">{hasPin ? "Active" : "Not set"}</p>
+          <p className="text-xs uppercase tracking-[0.14em] text-stone-500">Status</p>
+          <p className="mt-1 font-medium text-stone-900">{hasPin ? "Active" : "Not set"}</p>
         </div>
-        {hasPin && <CheckCircle2 className="h-5 w-5 text-emerald-400" />}
+        {hasPin && <CheckCircle2 className="h-5 w-5 text-emerald-700" />}
       </div>
 
       <form
@@ -96,7 +96,7 @@ export function TransactionPinForm() {
         <div>
           <label
             htmlFor="transaction-pin"
-            className="mb-2 block text-sm font-medium text-slate-300"
+            className="mb-2 block text-sm font-medium text-stone-700"
           >
             {hasPin
               ? "New transaction PIN"
@@ -115,14 +115,14 @@ export function TransactionPinForm() {
               )
             }
             placeholder="••••••"
-            className="w-full rounded-xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/60 focus:ring-2 focus:ring-blue-400/10"
+            className="w-full rounded-md border border-stone-200 bg-white px-4 py-3 text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-(--brand-red) focus:ring-2 focus:ring-red-100"
           />
         </div>
 
         <div>
           <label
             htmlFor="confirm-transaction-pin"
-            className="mb-2 block text-sm font-medium text-slate-300"
+            className="mb-2 block text-sm font-medium text-stone-700"
           >
             Confirm transaction PIN
           </label>
@@ -139,12 +139,12 @@ export function TransactionPinForm() {
               )
             }
             placeholder="••••••"
-            className="w-full rounded-xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400/60 focus:ring-2 focus:ring-blue-400/10"
+            className="w-full rounded-md border border-stone-200 bg-white px-4 py-3 text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-(--brand-red) focus:ring-2 focus:ring-red-100"
           />
         </div>
 
         {message && (
-          <p className="rounded-xl border border-emerald-400/15 bg-emerald-400/10 px-3 py-2.5 text-sm text-emerald-300">
+          <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm text-emerald-700">
             {message}
           </p>
         )}
@@ -152,7 +152,7 @@ export function TransactionPinForm() {
         <button
           type="submit"
           disabled={setPinMutation.isPending}
-          className="inline-flex items-center gap-2 rounded-xl bg-blue-500 px-4 py-2.5 font-medium text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-md bg-(--brand-red) px-4 py-2.5 font-medium text-white transition hover:bg-(--brand-red-dark) disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Save className="h-4 w-4" />
           {setPinMutation.isPending
