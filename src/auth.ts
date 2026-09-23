@@ -8,6 +8,11 @@ import { prisma } from "@/lib/prisma";
 
 const ACCESS_TOKEN_LIFETIME_SECONDS = 30 * 60;
 const REFRESH_TOKEN_LIFETIME_SECONDS = 2 * 24 * 60 * 60;
+const SESSION_LIFETIME_SECONDS = 12 * 60 * 60;
+
+function parseRememberMe(value: unknown): boolean {
+  return value === true || value === "true" || value === "on";
+}
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
@@ -18,6 +23,7 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        remember: { label: "Remember me", type: "text" },
       },
 
       async authorize(credentials) {
@@ -53,6 +59,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
+          remember: parseRememberMe(credentials.remember),
         };
       },
     }),
@@ -71,11 +78,16 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        const remember = parseRememberMe(user.remember);
+        const refreshLifetimeSeconds = remember
+          ? REFRESH_TOKEN_LIFETIME_SECONDS
+          : SESSION_LIFETIME_SECONDS;
+
         token.id = user.id;
         token.accessToken = randomUUID();
         token.accessTokenExpires = Date.now() + ACCESS_TOKEN_LIFETIME_SECONDS * 1000;
         token.refreshToken = randomUUID();
-        token.refreshTokenExpires = Date.now() + REFRESH_TOKEN_LIFETIME_SECONDS * 1000;
+        token.refreshTokenExpires = Date.now() + refreshLifetimeSeconds * 1000;
       } else if (
         token.refreshTokenExpires &&
         Date.now() >= token.refreshTokenExpires

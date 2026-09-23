@@ -1,5 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "cn";
 
 const footerColumns = [
   {
@@ -31,7 +35,17 @@ const footerColumns = [
   },
 ] as const;
 
+function footerLinkIsActive(pathname: string, href: string) {
+  if (href.startsWith("mailto:") || href.includes("#")) {
+    return false;
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export default function Footer() {
+  const pathname = usePathname();
+
   return (
     <footer className="border-t-4 border-(--brand-red) bg-(--dashboard-white) text-(--dashboard-text)">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-14 lg:grid-cols-[1.35fr_repeat(3,0.8fr)] lg:px-8">
@@ -57,13 +71,26 @@ export default function Footer() {
               {column.title}
             </h2>
             <ul className="mt-5 space-y-3">
-              {column.links.map(([label, href]) => (
-                <li key={label}>
-                  <Link href={href} className="text-sm text-(--dashboard-text-muted) transition hover:text-(--brand-red)">
-                    {label}
-                  </Link>
-                </li>
-              ))}
+              {column.links.map(([label, href]) => {
+                const isActive = footerLinkIsActive(pathname, href);
+
+                return (
+                  <li key={label}>
+                    <Link
+                      href={href}
+                      aria-current={isActive ? "page" : undefined}
+                      className={cn(
+                        "text-sm transition",
+                        isActive
+                          ? "font-semibold text-(--brand-red)"
+                          : "text-(--dashboard-text-muted) hover:text-(--brand-red)",
+                      )}
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}
@@ -73,9 +100,15 @@ export default function Footer() {
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-6 text-xs text-(--dashboard-text-muted) sm:flex-row sm:items-center sm:justify-between lg:px-8">
           <p>(c) {new Date().getFullYear()} BPI Bank. Banking for everyday progress.</p>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
-            <Link href="/about" className="hover:text-(--brand-red)">Privacy</Link>
-            <Link href="/about" className="hover:text-(--brand-red)">Terms of use</Link>
-            <Link href="/about" className="hover:text-(--brand-red)">Accessibility</Link>
+            <Link href="/about" className="hover:text-(--brand-red)">
+              Privacy
+            </Link>
+            <Link href="/about" className="hover:text-(--brand-red)">
+              Terms of use
+            </Link>
+            <Link href="/about" className="hover:text-(--brand-red)">
+              Accessibility
+            </Link>
           </div>
         </div>
       </div>
