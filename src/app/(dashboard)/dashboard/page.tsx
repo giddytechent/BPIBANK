@@ -45,7 +45,7 @@ export default function DashboardPage() {
   const currentDate = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }).format(new Date())
 
   return (
-    <div className="w-full mx-auto max-w-7xl p-5 sm:p-8 lg:px-10">
+    <div className="mx-auto w-full min-w-0 max-w-7xl p-5 sm:p-8 lg:px-10">
       <DashboardHeader profileName={profileName} initials={initials} currentDate={currentDate} />
       <BalanceSummary totalBalance={formatMoney(totalBalance)} accountCount={accounts.length} income={formatMoney(income)} spending={formatMoney(spending)} />
       <FeatureBanner />

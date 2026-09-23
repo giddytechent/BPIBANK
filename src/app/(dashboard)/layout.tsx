@@ -3,9 +3,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { Bell, ChevronDown, Menu, Search, X } from "lucide-react";
+import { Bell, ChevronDown, LogOut, Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc";
@@ -18,6 +19,7 @@ export default function DashboardLayout({
     const pathname = usePathname();
     const [mobileOpen, setMobileOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
+    const [isSigningOut, setIsSigningOut] = useState(false);
     const trpc = useTRPC();
     const profileQuery = useQuery(trpc.user.me.queryOptions());
     const profileName = profileQuery.data?.name?.trim() || "Your profile";
@@ -36,6 +38,18 @@ export default function DashboardLayout({
         ["/dashboard/transactions", "Transactions"],
         ["/dashboard/cards", "Cards"],
     ] as const;
+
+    const handleSignOut = async () => {
+        setIsSigningOut(true);
+        setMobileOpen(false);
+        setProfileOpen(false);
+
+        try {
+            await signOut({ callbackUrl: "/login" });
+        } catch {
+            setIsSigningOut(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-background text-foreground">
@@ -74,6 +88,15 @@ export default function DashboardLayout({
                                         <p className="mt-0.5 text-xs text-stone-500">Personal account</p>
                                     </div>
                                     <Link href="/dashboard/settings" onClick={() => setProfileOpen(false)} className="mt-1 block rounded px-3 py-2 text-sm hover:bg-red-50 hover:text-(--brand-red)">Profile and settings</Link>
+                                    <button
+                                        type="button"
+                                        onClick={handleSignOut}
+                                        disabled={isSigningOut}
+                                        className="mt-1 flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm font-medium text-(--brand-red) transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                    >
+                                        <LogOut size={16} />
+                                        {isSigningOut ? "Signing out..." : "Sign out"}
+                                    </button>
                                 </div>
                             )}
                         </div>
@@ -91,6 +114,15 @@ export default function DashboardLayout({
                                 </Link>
                             ))}
                             <Link href="/dashboard/settings" onClick={() => setMobileOpen(false)} className="rounded-md px-3 py-3 text-sm font-semibold text-white/85 hover:bg-white/10">Settings</Link>
+                            <button
+                                type="button"
+                                onClick={handleSignOut}
+                                disabled={isSigningOut}
+                                className="flex items-center gap-2 rounded-md px-3 py-3 text-left text-sm font-semibold text-white/85 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                                <LogOut size={17} />
+                                {isSigningOut ? "Signing out..." : "Sign out"}
+                            </button>
                         </div>
                     </nav>
                 )}

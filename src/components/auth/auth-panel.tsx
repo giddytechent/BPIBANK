@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import Image from "next/image";
 import type { ComponentType, ReactNode } from "react";
 
 type AuthPanelProps = {
@@ -18,10 +19,7 @@ export function AuthPanel({
 }: AuthPanelProps) {
   return (
     <>
-      <section
-        aria-hidden="true"
-        className="marketing-pattern relative overflow-hidden rounded-md px-6 py-10 text-white lg:hidden"
-      >
+      <section className="marketing-pattern relative overflow-hidden rounded-md px-6 py-10 text-white lg:hidden">
         <div className="pointer-events-none absolute -right-16 top-0 h-48 w-48 rotate-45 border-[2rem] border-(--marketing-gold)/90" />
         <div className="relative z-10 max-w-lg">
           <p className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.16em] text-(--marketing-gold)">
@@ -37,7 +35,7 @@ export function AuthPanel({
         </div>
       </section>
 
-      <section className="relative hidden min-h-[32rem] overflow-hidden rounded-md lg:flex lg:flex-col">
+      <section className="relative hidden min-h-128 overflow-hidden rounded-md lg:flex lg:flex-col">
         <div className="marketing-pattern absolute inset-0 text-white" />
         <div
           aria-hidden="true"
@@ -51,6 +49,20 @@ export function AuthPanel({
           aria-hidden="true"
           className="pointer-events-none absolute right-[28%] top-0 h-full w-px bg-white/20"
         />
+        <div
+          aria-hidden="true"
+          className="absolute bottom-14 right-10 hidden aspect-612/471 w-52 overflow-hidden border-4 border-white/20 shadow-2xl xl:block xl:w-64"
+        >
+          <Image
+            src="/block2-digitalization-1.png"
+            alt=""
+            fill
+            sizes="16rem"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-(--marketing-red-dark)/25" />
+          <div className="absolute bottom-0 left-0 h-1.5 w-full bg-(--marketing-gold)" />
+        </div>
 
         <div className="relative z-10 flex flex-1 flex-col justify-between p-10 xl:p-12">
           <div className="max-w-lg">
