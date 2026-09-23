@@ -38,7 +38,7 @@ export default function DashboardLayout({
     ] as const;
 
     return (
-        <div className="mx-auto min-h-screen m bg-background text-foreground">
+        <div className="min-h-screen bg-background text-foreground">
             <header className="brand-pattern sticky top-0 z-20 text-white shadow-md">
                 <div className="mx-auto flex min-h-18 max-w-7xl items-center gap-5 px-5 py-3 lg:px-8">
                     <Link href="/dashboard" className="flex shrink-0 items-center gap-2">
