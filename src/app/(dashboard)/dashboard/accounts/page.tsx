@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc";
 import { formatMoney } from "@/utils/formatMoney";
 import { CreateAccountForm } from "@/components/dashboard/createAccountForm";
+import { AccountNumber } from "@/components/dashboard/accountNumber";
 
 export default function AccountsPage() {
   const trpc = useTRPC();
@@ -77,9 +78,8 @@ export default function AccountsPage() {
                     {account.type}
                   </p>
 
-                  <p className="mt-1 text-sm text-stone-500">
-                    •••• {account.accountNumber.slice(-4)}
-                  </p>
+                  <AccountNumber accountNumber={account.accountNumber} />
+
                 </div>
 
                 <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
