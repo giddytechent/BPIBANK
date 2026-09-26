@@ -23,7 +23,7 @@ export default function AdminTransactionDetailsPage({ params }: { params: Promis
     setAmount((transaction.amount / 100).toFixed(2));
     setStatus(transaction.status);
     setDateTime(toLocalInputValue(transaction.createdAt));
-  }, [transaction?.id, transaction?.updatedAt]);
+  }, [transaction?.id, transaction?.amount, transaction?.status, transaction?.createdAt]);
 
   const editTransaction = useMutation(trpc.admin.editTransaction.mutationOptions({
     onSuccess: async () => {
