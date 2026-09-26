@@ -17,6 +17,11 @@ enum AccountType {
   SAVINGS
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
 enum TransactionType {
   DEPOSIT
   WITHDRAWAL
@@ -48,6 +53,7 @@ model User {
   transactionPinHash String?
   city               String?
   country            String?
+  role               UserRole @default(USER)
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
@@ -56,6 +62,7 @@ model User {
 
   sentTransactions     Transaction[] @relation("SenderTransactions")
   receivedTransactions Transaction[] @relation("ReceiverTransactions")
+  transactionAudits   TransactionAudit[]
 }
 
 model Account {
@@ -99,6 +106,27 @@ model Transaction {
 
   receiverAccountId String?
   receiverAccount   Account? @relation("ReceiverAccount", fields: [receiverAccountId], references: [id])
+
+  audits TransactionAudit[]
+}
+
+model TransactionAudit {
+  id            String            @id @default(cuid())
+  transactionId String
+  actorUserId   String?
+  previousAmount Int
+  newAmount      Int
+  previousStatus TransactionStatus
+  newStatus      TransactionStatus
+  previousCreatedAt DateTime
+  newCreatedAt      DateTime
+  changedAt     DateTime          @default(now())
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  actor       User?       @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([transactionId, changedAt])
+  @@index([actorUserId])
 }
 
 model Card {

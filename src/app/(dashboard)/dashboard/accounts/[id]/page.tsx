@@ -190,7 +190,7 @@ export default function AccountDetailsPage({
               </button>
 
               <div className="w-full rounded-xl border border-white/10 bg-white/3 px-4 py-3 text-sm font-medium text-slate-200">
-                <AddMoneyForm accountId={account.id} />
+                {/* <AddMoneyForm accountId={account.id} /> */}
               </div>
             </div>
           </div>

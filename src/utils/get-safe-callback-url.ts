@@ -30,5 +30,9 @@ export function getSafeCallbackUrl(
     return path;
   }
 
+  if (path === "/admin" || path.startsWith("/admin/")) {
+    return path;
+  }
+
   return DEFAULT_CALLBACK_URL;
 }

@@ -4,6 +4,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string
+      role: "USER" | "ADMIN"
     } & DefaultSession["user"]
     accessToken?: string
     error?: "RefreshTokenExpired"
@@ -11,12 +12,14 @@ declare module "next-auth" {
   interface User {
     id: string
     remember?: boolean
+    role?: "USER" | "ADMIN"
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     id?: string
+    role?: "USER" | "ADMIN"
     accessToken?: string
     accessTokenExpires?: number
     refreshToken?: string

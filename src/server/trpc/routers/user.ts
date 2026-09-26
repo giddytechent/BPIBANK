@@ -3,12 +3,18 @@ import bcrypt from "bcryptjs";
 
 import {
   protectedProcedure,
-  publicProcedure,
+  adminProcedure,
   router,
 } from "../init";
 
+const userListInput = z.object({
+  page: z.number().int().min(1).default(1),
+  pageSize: z.number().int().min(1).max(100).default(25),
+  search: z.string().trim().max(100).default(""),
+});
+
 export const userRouter = router({
-  getById: publicProcedure
+  getById: adminProcedure
     .input(
       z.object({
         id: z.string(),
@@ -19,15 +25,76 @@ export const userRouter = router({
         where: {
           id: input.id,
         },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          city: true,
+          country: true,
+          role: true,
+          createdAt: true,
+          updatedAt: true,
+          accounts: {
+            select: {
+              id: true,
+              accountNumber: true,
+              type: true,
+              balance: true,
+              currency: true,
+              createdAt: true,
+            },
+            orderBy: { createdAt: "asc" },
+          },
+        },
       });
     }),
 
-  getAll: protectedProcedure.query(async ({ ctx }) => {
-    return ctx.prisma.user.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+  getAll: adminProcedure.input(userListInput).query(async ({ ctx, input }) => {
+    const search = input.search;
+    const where = search
+      ? {
+          OR: [
+            { name: { contains: search, mode: "insensitive" as const } },
+            { email: { contains: search, mode: "insensitive" as const } },
+          ],
+        }
+      : {};
+
+    const [total, users] = await ctx.prisma.$transaction([
+      ctx.prisma.user.count({ where }),
+      ctx.prisma.user.findMany({
+        where,
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          city: true,
+          country: true,
+          role: true,
+          createdAt: true,
+          _count: { select: { accounts: true } },
+          accounts: { select: { balance: true, currency: true } },
+        },
+        orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+        skip: (input.page - 1) * input.pageSize,
+        take: input.pageSize,
+      }),
+    ]);
+
+    return {
+      items: users.map(({ _count, accounts, ...user }) => ({
+        ...user,
+        accountCount: _count.accounts,
+        balances: accounts.reduce<Record<string, number>>((totals, account) => {
+          totals[account.currency] = (totals[account.currency] ?? 0) + account.balance;
+          return totals;
+        }, {}),
+      })),
+      total,
+      page: input.page,
+      pageSize: input.pageSize,
+      pageCount: Math.ceil(total / input.pageSize),
+    };
   }),
 
   me: protectedProcedure.query(async ({ ctx }) => {

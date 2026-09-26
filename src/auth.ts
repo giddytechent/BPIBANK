@@ -57,6 +57,7 @@ export const authOptions: NextAuthOptions = {
 
         return {
           id: user.id,
+          role: user.role,
           email: user.email,
           name: user.name,
           remember: parseRememberMe(credentials.remember),
@@ -84,6 +85,7 @@ export const authOptions: NextAuthOptions = {
           : SESSION_LIFETIME_SECONDS;
 
         token.id = user.id;
+        token.role = user.role;
         token.accessToken = randomUUID();
         token.accessTokenExpires = Date.now() + ACCESS_TOKEN_LIFETIME_SECONDS * 1000;
         token.refreshToken = randomUUID();
@@ -107,6 +109,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user && token.id) {
         session.user.id = token.id as string;
+        session.user.role = token.role === "ADMIN" ? "ADMIN" : "USER";
       }
 
       session.accessToken = token.accessToken;

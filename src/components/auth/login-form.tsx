@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { getSafeCallbackUrl } from "@/utils/get-safe-callback-url";
@@ -54,7 +54,20 @@ export function LoginForm() {
       return;
     }
 
-    router.push(callbackUrl);
+    const session = await getSession();
+    if (!session?.user) {
+      setError("root", {
+        type: "manual",
+        message: "You signed in, but your session could not be loaded. Please try again.",
+      });
+      return;
+    }
+
+    const destination = session.user.role === "ADMIN"
+      ? callbackUrl.startsWith("/admin") ? callbackUrl : "/admin"
+      : callbackUrl.startsWith("/admin") ? "/dashboard" : callbackUrl;
+
+    router.replace(destination);
     router.refresh();
   };
 

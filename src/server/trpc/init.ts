@@ -40,3 +40,22 @@ export const protectedProcedure = t.procedure.use(
     });
   },
 );
+
+export const adminProcedure = protectedProcedure.use(
+  async ({ ctx, next }) => {
+    // Re-read the role from the database so a stale JWT cannot retain admin access.
+    const user = await ctx.prisma.user.findUnique({
+      where: { id: ctx.session.user.id },
+      select: { role: true },
+    });
+
+    if (user?.role !== "ADMIN") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "You do not have permission to access this resource.",
+      });
+    }
+
+    return next({ ctx });
+  },
+);
